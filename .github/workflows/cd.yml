@@ -1,0 +1,31 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Get code from GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Install Node dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 3. Build Docker image
+      - name: Build Docker image
+        run: docker build -t my-node-app .
+
+      # 4. Run Docker container
+      - name: Run Docker container
+        run: docker run -d -p 3000:3000 --name my-app my-node-app
+
+      # 5. Check container
+      - name: Check container
+        run: docker ps
